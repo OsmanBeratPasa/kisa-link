@@ -27,6 +27,13 @@ public class LinkRepository {
         return jdbc.sql("SELECT id, code, target_url, click_count, created_at FROM links WHERE code = :code")
                 .param("code", kod)
                 .query(Link.class)
+
                 .optional();
+    }
+
+    public void tiklamaArtir(String kod) {
+        jdbc.sql("UPDATE links SET click_count = click_count + 1 WHERE code = :code")
+                .param("code", kod)
+                .update();
     }
 }
