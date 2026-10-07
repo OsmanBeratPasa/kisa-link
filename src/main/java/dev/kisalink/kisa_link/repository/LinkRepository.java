@@ -15,19 +15,18 @@ public class LinkRepository {
         this.jdbc = jdbc;
     }
 
-    public void kaydet(String code, String targetUrl) {
+    public void kaydet(String code,String targetUrl){
         jdbc.sql("INSERT INTO links (code, target_url) VALUES (:code, :url)")
                 .param("code", code)
                 .param("url", targetUrl)
                 .update();
+
     }
 
-    public Optional<Link> kodaGoreBul(String code){
+    public Optional<Link> kodaGoreBul(String kod) {
         return jdbc.sql("SELECT id, code, target_url, click_count, created_at FROM links WHERE code = :code")
-                .param("code",code)
+                .param("code", kod)
                 .query(Link.class)
                 .optional();
-
-
-        }
     }
+}
