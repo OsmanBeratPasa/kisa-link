@@ -1,9 +1,11 @@
 package dev.kisalink.kisa_link.web;
 
 import dev.kisalink.kisa_link.service.LinkService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.net.URI;
 import java.util.Optional;
@@ -18,7 +20,7 @@ public class LinkController {
     }
 
     @PostMapping("/api/links")
-    public ResponseEntity<Void> kisalt(@RequestBody KisaltIstegi istek) {
+    public ResponseEntity<Void> kisalt( @Valid @RequestBody KisaltIstegi istek) {
         String kod = linkService.kisalt(istek.targetUrl());
         URI adres = URI.create("http://localhost:8080/" + kod);
         return ResponseEntity.created(adres).build();
