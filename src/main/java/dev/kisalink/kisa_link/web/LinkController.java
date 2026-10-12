@@ -1,5 +1,6 @@
 package dev.kisalink.kisa_link.web;
 
+import dev.kisalink.kisa_link.domain.Link;
 import dev.kisalink.kisa_link.service.LinkService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,18 @@ public class LinkController {
         String kod = linkService.kisalt(istek.targetUrl());
         URI adres = URI.create("http://localhost:8080/" + kod);
         return ResponseEntity.created(adres).build();
+    }
+
+    @GetMapping(path = "/api/links/{kod}", version = "1")
+    public LinkBilgisiV1 bilgi(@PathVariable String kod) {
+        Link link = linkService.linkBul(kod);
+        return new LinkBilgisiV1(link.targetUrl());
+    }
+
+    @GetMapping(path = "/api/links/{kod}", version = "2")
+    public LinkBilgisiV2 bilgiV2(@PathVariable String kod) {
+        Link link = linkService.linkBul(kod);
+        return new LinkBilgisiV2(link.targetUrl(), link.clickCount(), link.createdAt());
     }
 
     @GetMapping("/{kod}")

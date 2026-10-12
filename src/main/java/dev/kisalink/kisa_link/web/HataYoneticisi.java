@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,7 +23,7 @@ public class HataYoneticisi {
     @ExceptionHandler(KodBulunamadiException.class)
     public ProblemDetail kodBulunamadi(KodBulunamadiException e) {
         ProblemDetail p = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-        p.setTitle("Kod bulunamadı");
+        p.setTitle("Kod Bulunamadı");
         return p;
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -48,6 +49,9 @@ public class HataYoneticisi {
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail beklenmeyen(Exception e) {
+        if (e instanceof ErrorResponse yanit) {
+            return yanit.getBody();
+        }
         log.error("Beklenmeyen hata", e);
         ProblemDetail p = ProblemDetail.forStatusAndDetail(
                 HttpStatus.INTERNAL_SERVER_ERROR, "Beklenmeyen bir hata oluştu");

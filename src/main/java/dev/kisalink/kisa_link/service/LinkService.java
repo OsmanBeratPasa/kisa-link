@@ -54,4 +54,12 @@ public class LinkService {
         linkRepository.tiklamaArtir(kod);
         return kutu.get().targetUrl();
     }
+
+    public Link linkBul(String kod) {
+        Optional<Link> kutu = linkRepository.kodaGoreBul(kod);
+        if (kutu.isEmpty()) {
+            throw new KodBulunamadiException(kod);
+        }
+        return kutu.get();
+    }
 }
