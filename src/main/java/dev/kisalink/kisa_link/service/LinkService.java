@@ -46,12 +46,12 @@ public class LinkService {
         return kod;
     }
 
-    public Optional<String> hedefBul(String kod) {
+    public String hedefBul(String kod) {
         Optional<Link> kutu = linkRepository.kodaGoreBul(kod);
         if (kutu.isEmpty()) {
-            return Optional.empty();
+            throw new KodBulunamadiException(kod);
         }
         linkRepository.tiklamaArtir(kod);
-        return Optional.of(kutu.get().targetUrl());
+        return kutu.get().targetUrl();
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.net.URI;
 import java.util.Optional;
 
@@ -28,12 +27,11 @@ public class LinkController {
 
     @GetMapping("/{kod}")
     public ResponseEntity<Void> yonlendir(@PathVariable String kod) {
-        Optional<String> hedef = linkService.hedefBul(kod);
-        if (hedef.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        String hedef = linkService.hedefBul(kod);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(hedef.get()))
+                .location(URI.create(hedef))
                 .build();
     }
+
+
 }
